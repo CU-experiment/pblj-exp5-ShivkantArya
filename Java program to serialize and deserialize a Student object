@@ -1,0 +1,74 @@
+import java.io.*;
+
+// Student class must implement Serializable for object serialization
+class Student implements Serializable {
+    private static final long serialVersionUID = 1L; // Version control for serialization
+
+    private int id;
+    private String name;
+    private double gpa;
+
+    // Constructor
+    public Student(int id, String name, double gpa) {
+        this.id = id;
+        this.name = name;
+        this.gpa = gpa;
+    }
+
+    // Method to display student details
+    public void displayDetails() {
+        System.out.println("Student Details:");
+        System.out.println("ID   : " + id);
+        System.out.println("Name : " + name);
+        System.out.println("GPA  : " + gpa);
+    }
+}
+
+public class StudentSerialization {
+
+    // Method to serialize Student object
+    public static void serializeStudent(Student student, String filename) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+            oos.writeObject(student); // Serializing the object
+            System.out.println("Student object serialized successfully.");
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found during serialization: " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("IOException during serialization: " + e.getMessage());
+        }
+    }
+
+    // Method to deserialize Student object
+    public static Student deserializeStudent(String filename) {
+        Student student = null;
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+            student = (Student) ois.readObject(); // Deserializing the object
+            System.out.println("Student object deserialized successfully.");
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found during deserialization: " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("IOException during deserialization: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.out.println("Class not found during deserialization: " + e.getMessage());
+        }
+        return student;
+    }
+
+    public static void main(String[] args) {
+        String filename = "student.ser";
+
+        // Creating a Student object
+        Student student1 = new Student(101, "Alice Johnson", 3.85);
+
+        // Serializing the Student object
+        serializeStudent(student1, filename);
+
+        // Deserializing the Student object
+        Student deserializedStudent = deserializeStudent(filename);
+
+        // Displaying the deserialized student details
+        if (deserializedStudent != null) {
+            deserializedStudent.displayDetails();
+        }
+    }
+}
