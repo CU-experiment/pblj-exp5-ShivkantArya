@@ -1,0 +1,47 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class SumWithAutoboxingUnboxing {
+
+    // Method to parse a string into an Integer using Integer.parseInt()
+    public static Integer parseStringToInteger(String numberStr) {
+        return Integer.parseInt(numberStr); // Autoboxing: int returned is automatically converted to Integer
+    }
+
+    // Method to calculate the sum of a list of Integers
+    public static int calculateSum(ArrayList<Integer> numbers) {
+        int sum = 0;
+        for (Integer num : numbers) {
+            sum += num; // Unboxing: Integer is automatically converted to int
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<Integer> numbers = new ArrayList<>();
+
+        System.out.println("Enter integers (type 'done' to finish):");
+
+        // Reading integers from the user until 'done' is entered
+        while (true) {
+            String input = scanner.nextLine();
+            if (input.equalsIgnoreCase("done")) {
+                break;
+            }
+
+            try {
+                Integer number = parseStringToInteger(input); // Parsing and autoboxing
+                numbers.add(number); // Autoboxing when adding to ArrayList<Integer>
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid integer or 'done' to finish.");
+            }
+        }
+
+        // Calculate and display the sum
+        int totalSum = calculateSum(numbers);
+        System.out.println("Sum of the entered integers: " + totalSum);
+
+        scanner.close();
+    }
+}
